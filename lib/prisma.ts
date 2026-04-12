@@ -10,11 +10,17 @@ function createClient() {
   const rawUrl = process.env.DATABASE_URL ?? "file:./dev.db";
   const dbPath = path.resolve(rawUrl.replace(/^file:/, ""));
   const adapter = new PrismaBetterSqlite3({ url: dbPath });
-  // PrismaClient in v7 requires adapter to be passed at the type level
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return new PrismaClient({ adapter } as any);
 }
 
-export const prisma = globalForPrisma.prisma ?? createClient();
-
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+// Lazy getter — only instantiates when first accessed at request time,
+// not during next build's static analysis phase.
+export const prisma: PrismaClient = new Proxy({} as PrismaClient, {
+  get(_target, prop) {
+    const client = globalForPrisma.prisma ?? (globalForPrisma.prisma = createClient());
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const value = (client as any)[prop];
+    return typeof value === "function" ? value.bind(client) : value;
+  },
+});
