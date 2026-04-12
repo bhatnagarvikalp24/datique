@@ -200,7 +200,7 @@ export default function Home() {
           <div className="flex gap-5">
             <Link href="/about" className="hover:text-gray-700 transition">Our Story</Link>
             <Link href="/submit" className="hover:text-gray-700 transition">Get Reviewed</Link>
-            <a href="mailto:venturesloading@gmail.com" className="hover:text-gray-700 transition">Contact</a>
+            <a href="mailto:connect@datique.co.in" className="hover:text-gray-700 transition">Contact</a>
           </div>
           <span>© {new Date().getFullYear()} Datique</span>
         </div>

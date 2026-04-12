@@ -17,12 +17,6 @@ export default function Navbar() {
           >
             Our Story
           </Link>
-          <a
-            href="mailto:venturesloading@gmail.com"
-            className="text-gray-500 transition hover:text-gray-900"
-          >
-            Help
-          </a>
           <Link
             href="/submit"
             className="rounded-full bg-rose-500 px-5 py-2 font-semibold text-white transition hover:bg-rose-600"
