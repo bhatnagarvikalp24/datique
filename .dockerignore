@@ -1,0 +1,10 @@
+node_modules
+.next
+app/generated/prisma
+uploads
+reports
+*.db
+*.db-journal
+.env*
+.git
+.DS_Store
