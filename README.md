@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MatchFix
 
-## Getting Started
+A platform where users submit their dating profiles (Hinge/Bumble), pay ₹199 via Razorpay, and receive a PDF review via email.
 
-First, run the development server:
+## Tech Stack
+
+- **Frontend**: Next.js 16 (App Router) + Tailwind CSS
+- **Backend**: Next.js API routes (Node.js)
+- **Database**: SQLite via Prisma v7 + `@prisma/adapter-better-sqlite3`
+- **File Upload**: Local `/uploads` directory
+- **Payment**: Razorpay (test mode)
+- **Notifications**: react-hot-toast
+
+## Setup
+
+### 1. Install dependencies
+
+```bash
+npm install
+```
+
+### 2. Configure environment variables
+
+Copy `.env.example` to `.env` and fill in your Razorpay keys:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env`:
+
+```
+DATABASE_URL="file:./dev.db"
+RAZORPAY_KEY_ID="rzp_test_your_key_id"
+RAZORPAY_KEY_SECRET="your_key_secret"
+NEXT_PUBLIC_RAZORPAY_KEY_ID="rzp_test_your_key_id"
+```
+
+Get your test keys from the [Razorpay Dashboard](https://dashboard.razorpay.com/app/keys).
+
+### 3. Run database migration
+
+```bash
+npx prisma migrate dev --name init
+npx prisma generate
+```
+
+### 4. Start the dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Pages
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Route | Description |
+|-------|-------------|
+| `/` | Landing page |
+| `/submit` | Profile submission form |
+| `/payment?id=<id>` | Payment page (Razorpay checkout) |
+| `/success` | Confirmation after payment |
+| `/admin` | Admin dashboard (all submissions) |
 
-## Learn More
+## API Routes
 
-To learn more about Next.js, take a look at the following resources:
+| Method | Route | Description |
+|--------|-------|-------------|
+| POST | `/api/submit` | Save form submission |
+| GET | `/api/submission?id=` | Fetch single submission |
+| POST | `/api/create-order` | Create Razorpay order |
+| POST | `/api/verify-payment` | Verify signature, update DB |
+| GET | `/api/admin/submissions` | List all submissions |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Payment Flow
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. User fills form → POST `/api/submit` → saved with `pending_payment`
+2. Redirect to `/payment?id=<submission_id>`
+3. Click "Pay" → POST `/api/create-order` → Razorpay checkout opens
+4. On success → POST `/api/verify-payment` → status updated to `paid`
+5. Redirect to `/success`
 
-## Deploy on Vercel
+## Production Build
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build
+npm start
+```

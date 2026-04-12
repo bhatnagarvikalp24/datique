@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model ProfileCorpus {
+  id          String   @id @default(uuid())
+  app         String   // "Hinge" | "Bumble" | "Tinder" | "Any"
+  tier        String   // "top" | "average" | "poor"
+  age_bracket String   // "18-24" | "25-30" | "31-40" | "41+"
+  vibe        String
+  description String   // overall profile summary
+  photos_desc String   // description of photos
+  prompts     String   // JSON: [{prompt, response}]
+  bio         String?
+  notes       String?  // what makes this tier correct
+  embedding   String   // JSON float array from text-embedding-3-small
+  created_at  DateTime @default(now())
+}
+
+model Submission {
+  id                  String   @id @default(uuid())
+  name                String?
+  email               String
+  age                 Int
+  app_used            String
+  struggle            String
+  vibe                String
+  screenshots         String
+  payment_status      String   @default("pending_payment")
+  razorpay_order_id   String?
+  razorpay_payment_id String?
+  report_status       String   @default("not_started") // not_started | processing | done | failed
+  report_path         String?
+  created_at          DateTime @default(now())
+}
