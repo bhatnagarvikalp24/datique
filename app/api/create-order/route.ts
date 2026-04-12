@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
 
-const razorpay = new Razorpay({
+const getRazorpay = () => new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID!,
   key_secret: process.env.RAZORPAY_KEY_SECRET!,
 });
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "Submission not found" }, { status: 404 });
     }
 
-    const order = await razorpay.orders.create({
+    const order = await getRazorpay().orders.create({
       amount: 19900, // ₹199 in paise
       currency: "INR",
       receipt: `receipt_${submissionId.slice(0, 20)}`,
