@@ -4,7 +4,7 @@ import path from "path";
 import { resolveStoredPath } from "@/lib/paths";
 import { findSimilarProfiles, formatCorpusContext } from "@/lib/corpus";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const getOpenAI = () => new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -200,7 +200,7 @@ USER CONTEXT:
 The following ${screenshotPaths.length} screenshot(s) show the full profile. Analyse every visible element — photos, prompts, bio, all text visible.`;
 
   const makeRequest = async (extraInstruction = "") => {
-    const response = await openai.chat.completions.create({
+    const response = await getOpenAI().chat.completions.create({
       model: "gpt-4o",
       max_tokens: 4096,
       messages: [

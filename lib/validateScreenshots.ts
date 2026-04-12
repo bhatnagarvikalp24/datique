@@ -2,7 +2,7 @@ import OpenAI from "openai";
 import fs from "fs";
 import { resolveStoredPath } from "@/lib/paths";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const getOpenAI = () => new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export interface ValidationResult {
   valid: boolean;
@@ -33,7 +33,7 @@ export async function validateProfileScreenshots(
     image_url: { url: fileToBase64DataUrl(p), detail: "low" as const },
   }));
 
-  const response = await openai.chat.completions.create({
+  const response = await getOpenAI().chat.completions.create({
     model: "gpt-4o-mini",
     max_tokens: 120,
     messages: [
