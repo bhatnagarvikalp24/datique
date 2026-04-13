@@ -276,8 +276,8 @@ export default function SubmitPage() {
               Submit Your Profile
             </h1>
             <p className="mb-8 text-gray-500">
-              Fill in the details below. Our AI analyses every element and generates
-              your PDF report instantly after payment.
+              Fill in the details below. We review every element of your profile
+              and deliver your PDF report instantly after payment.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-6">

@@ -127,15 +127,16 @@ export default function AboutPage() {
             What Datique actually does
           </h2>
           <p className="mb-8 text-gray-500">
-            We built an AI evaluation engine trained to think like the people
-            swiping on your profile — not like a generic checklist.
+            We built a review engine trained on thousands of real profiles —
+            calibrated against what actually works on Hinge, Bumble and Tinder,
+            not a generic checklist.
           </p>
           <div className="space-y-4">
             {[
               {
                 icon: "🔬",
                 title: "Multi-dimensional profile analysis",
-                desc: "Our multimodal AI — trained on millions of real profile interactions and behavioural data — analyses your photos, prompts, bio, and vibe together as a system, not in isolation. Because that&apos;s how a real person sees your profile.",
+                desc: "Built on patterns from thousands of real dating profiles across Hinge, Bumble and Tinder — we analyse your photos, prompts, bio, and vibe together as a system, not in isolation. Because that&apos;s how a real person sees your profile.",
               },
               {
                 icon: "🎯",
@@ -202,7 +203,7 @@ export default function AboutPage() {
           <div className="flex gap-5">
             <Link href="/about" className="hover:text-gray-700 transition">Our Story</Link>
             <Link href="/submit" className="hover:text-gray-700 transition">Get Reviewed</Link>
-            <Link href="/admin" className="hover:text-gray-700 transition">Admin</Link>
+            <a href="mailto:connect@datique.co.in" className="hover:text-gray-700 transition">Contact</a>
           </div>
           <span>© {new Date().getFullYear()} Datique</span>
         </div>

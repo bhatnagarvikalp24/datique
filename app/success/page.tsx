@@ -14,14 +14,14 @@ const STATUS_CONFIG: Record<
   not_started: {
     icon: "⏳",
     headline: "Queuing your review…",
-    sub: "We're sending your profile to our AI reviewer. This takes about 30–60 seconds.",
+    sub: "We're running your profile through our review engine. This takes about 30–60 seconds.",
     color: "text-amber-600",
     bg: "bg-amber-50",
   },
   processing: {
-    icon: "🤖",
-    headline: "AI is reviewing your profile…",
-    sub: "Our AI engine is analysing your photos and prompts. Hang tight — this takes about 30–60 seconds.",
+    icon: "🔬",
+    headline: "Reviewing your profile…",
+    sub: "We're analysing every photo, prompt and bio against thousands of real profiles. Hang tight — about 30–60 seconds.",
     color: "text-blue-600",
     bg: "bg-blue-50",
   },

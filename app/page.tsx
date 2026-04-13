@@ -32,7 +32,7 @@ export default function Home() {
 
         <div className="relative mx-auto max-w-3xl">
           <span className="mb-5 inline-block rounded-full bg-rose-100 px-4 py-1.5 text-sm font-medium text-rose-600">
-            AI-Powered Profile Analysis
+            Reviewed by the data. Improved by you.
           </span>
           <h1 className="mb-5 text-5xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-6xl">
             We turn profiles{" "}
@@ -42,9 +42,10 @@ export default function Home() {
             </span>
           </h1>
           <p className="mb-10 text-lg text-gray-500 sm:text-xl">
-            Datique&apos;s AI analyses your Hinge, Bumble or Tinder profile — photos,
-            prompts, vibe — and delivers a brutally honest, actionable PDF report
-            so you know exactly what to fix.
+            Built on the patterns from thousands of real dating profiles —
+            Datique gives you the brutally honest, specific review your
+            friends won&apos;t. Photos, prompts, vibe. Everything that makes
+            her swipe right or keep scrolling.
           </p>
           <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link
@@ -116,9 +117,9 @@ export default function Home() {
               },
               {
                 step: "02",
-                icon: "🤖",
-                title: "AI Does the Work",
-                desc: "Our deep-learning engine — built on multimodal vision models and trained on real dating app behavioural data — scores every element of your profile simultaneously.",
+                icon: "🔬",
+                title: "Deep Analysis Begins",
+                desc: "Every photo, prompt, and bio is scored against patterns from thousands of real profiles. We know what works — and we know exactly where yours is losing her attention.",
               },
               {
                 step: "03",
@@ -177,8 +178,8 @@ export default function Home() {
             Stop guessing. Start matching.
           </h2>
           <p className="mb-8 text-lg text-rose-100">
-            For ₹199 — less than a single date — get a complete AI analysis of
-            your profile with actionable fixes that actually move the needle.
+            For ₹199 — less than a single date — get the honest, specific
+            review that tells you exactly what to fix and in what order.
           </p>
           <Link
             href="/submit"
