@@ -199,101 +199,85 @@ USER CONTEXT:
 
 The following ${screenshotPaths.length} screenshot(s) show the full profile. Analyse every visible element — photos, prompts, bio, all text visible.`;
 
-  const makeRequest = async (extraInstruction = "") => {
+  const makeRequest = async () => {
     const response = await getOpenAI().chat.completions.create({
       model: "gpt-4o",
       max_tokens: 4096,
+      response_format: { type: "json_object" },
       messages: [
         { role: "system", content: systemPrompt },
         {
           role: "user",
           content: [
-            {
-              type: "text",
-              text: userMessage + (extraInstruction ? `\n\n${extraInstruction}` : ""),
-            },
+            { type: "text", text: userMessage },
             ...imageMessages,
           ],
         },
       ],
     });
-    return response.choices[0].message.content ?? "";
+    return response.choices[0].message.content ?? "{}";
   };
 
   const parseReport = (raw: string): ProfileReport => {
-    const cleaned = raw
-      .replace(/^```json\s*/i, "")
-      .replace(/^```\s*/i, "")
-      .replace(/```\s*$/i, "")
-      .trim();
-    return JSON.parse(cleaned);
+    return JSON.parse(raw);
   };
 
-  // First attempt
-  let raw = await makeRequest();
+  // Single attempt — response_format: json_object guarantees valid JSON back
   try {
+    const raw = await makeRequest();
     return parseReport(raw);
   } catch {
-    // Retry once with an explicit reminder to return only JSON
-    raw = await makeRequest(
-      "IMPORTANT: Your response must be a single valid JSON object only. No explanation text, no markdown, no code fences — just the raw JSON."
-    );
-    try {
-      return parseReport(raw);
-    } catch {
-      // If the image isn't a dating profile, return a meaningful fallback report
-      // rather than a hard crash
-      const notProfileReport: ProfileReport = {
-        isValidProfile: false,
-        overallScore: 0,
-        tagline: "No dating profile detected in screenshots",
-        tldr:
-          "We couldn't detect a Hinge, Bumble, or Tinder profile in the screenshots you uploaded. Please re-submit with actual screenshots of your dating app profile — including your photos, bio, and prompts.",
-        dimensions: {
-          photoQuality: 0,
-          photoVariety: 0,
-          bioAuthenticity: 0,
-          humorWit: 0,
-          intentClarity: 0,
+    // API error or unexpected parse failure — return fallback
+    const notProfileReport: ProfileReport = {
+      isValidProfile: false,
+      overallScore: 0,
+      tagline: "No dating profile detected in screenshots",
+      tldr:
+        "We couldn't detect a Hinge, Bumble, or Tinder profile in the screenshots you uploaded. Please re-submit with actual screenshots of your dating app profile — including your photos, bio, and prompts.",
+      dimensions: {
+        photoQuality: 0,
+        photoVariety: 0,
+        bioAuthenticity: 0,
+        humorWit: 0,
+        intentClarity: 0,
+      },
+      photos: [],
+      photosOverview:
+        "No profile photos were detected. Please upload screenshots directly from your dating app.",
+      recommendedPhotoOrder: [],
+      prompts: [],
+      bioOverview:
+        "No bio or prompts were detected in the uploaded images.",
+      currentVibe: "Could not determine — no profile content found.",
+      targetVibe: vibe,
+      vibeMismatch:
+        "We couldn't analyse your vibe because no dating profile was detected in the screenshots.",
+      quickWins: [
+        {
+          priority: 1,
+          action: "Re-submit with real profile screenshots",
+          why: "Your uploaded images didn't contain a recognisable Hinge, Bumble, or Tinder profile.",
+          effort: "Low",
         },
-        photos: [],
-        photosOverview:
-          "No profile photos were detected. Please upload screenshots directly from your dating app.",
-        recommendedPhotoOrder: [],
-        prompts: [],
-        bioOverview:
-          "No bio or prompts were detected in the uploaded images.",
-        currentVibe: "Could not determine — no profile content found.",
-        targetVibe: vibe,
-        vibeMismatch:
-          "We couldn't analyse your vibe because no dating profile was detected in the screenshots.",
-        quickWins: [
-          {
-            priority: 1,
-            action: "Re-submit with real profile screenshots",
-            why: "Your uploaded images didn't contain a recognisable Hinge, Bumble, or Tinder profile.",
-            effort: "Low",
-          },
-          {
-            priority: 2,
-            action: "Include your full profile overview screenshot",
-            why: "This shows all photos and prompts in one view, giving the AI the most context.",
-            effort: "Low",
-          },
-          {
-            priority: 3,
-            action: "Add individual photo and prompt screenshots",
-            why: "Higher resolution screenshots allow more detailed per-photo feedback.",
-            effort: "Low",
-          },
-        ],
-        strengths: ["Could not evaluate — please re-submit with valid profile screenshots."],
-        rewrittenBio:
-          "Unable to generate a bio rewrite without profile content. Please re-submit.",
-        closingNote:
-          "Don't worry — just re-submit with the correct screenshots and we'll give you the full, detailed review you paid for. If you need help, reach out to our support team.",
-      };
-      return notProfileReport;
-    }
+        {
+          priority: 2,
+          action: "Include your full profile overview screenshot",
+          why: "This shows all photos and prompts in one view, giving the AI the most context.",
+          effort: "Low",
+        },
+        {
+          priority: 3,
+          action: "Add individual photo and prompt screenshots",
+          why: "Higher resolution screenshots allow more detailed per-photo feedback.",
+          effort: "Low",
+        },
+      ],
+      strengths: ["Could not evaluate — please re-submit with valid profile screenshots."],
+      rewrittenBio:
+        "Unable to generate a bio rewrite without profile content. Please re-submit.",
+      closingNote:
+        "Don't worry — just re-submit with the correct screenshots and we'll give you the full, detailed review you paid for. If you need help, reach out to our support team.",
+    };
+    return notProfileReport;
   }
 }

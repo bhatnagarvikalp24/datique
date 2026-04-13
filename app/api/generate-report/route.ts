@@ -51,24 +51,14 @@ export async function POST(request: NextRequest) {
     const screenshotPaths: string[] = JSON.parse(submission.screenshots);
 
     // ── Step 1: GPT-4o evaluation ──────────────────────────────────────────
-    let report;
-    try {
-      report = await evaluateProfile({
-        name: submission.name,
-        age: submission.age,
-        app_used: submission.app_used,
-        struggle: submission.struggle,
-        vibe: submission.vibe,
-        screenshotPaths,
-      });
-    } catch (evalErr) {
-      console.error("GPT-4o evaluation failed:", evalErr);
-      await prisma.submission.update({
-        where: { id: submissionId },
-        data: { report_status: "failed" },
-      });
-      return Response.json({ error: "AI evaluation failed" }, { status: 500 });
-    }
+    const report = await evaluateProfile({
+      name: submission.name,
+      age: submission.age,
+      app_used: submission.app_used,
+      struggle: submission.struggle,
+      vibe: submission.vibe,
+      screenshotPaths,
+    });
 
     // ── Step 2: Render PDF ─────────────────────────────────────────────────
     let pdfBuffer: Buffer;
