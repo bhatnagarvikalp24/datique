@@ -5,23 +5,33 @@ import { usePathname } from "next/navigation";
 export default function Navbar() {
   const path = usePathname();
   return (
-    <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white/90 backdrop-blur-sm">
+    <nav className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-        <Link href="/" className="text-xl font-bold text-rose-500 tracking-tight">
-          datique
+        <Link href="/" className="text-lg font-bold tracking-tight text-white">
+          DataPath Academy
         </Link>
         <div className="flex items-center gap-6 text-sm">
           <Link
-            href="/about"
-            className={`transition ${path === "/about" ? "font-medium text-gray-900" : "text-gray-500 hover:text-gray-900"}`}
+            href="/#topics"
+            className="text-slate-400 transition hover:text-white"
           >
-            Our Story
+            Topics
           </Link>
           <Link
-            href="/submit"
-            className="rounded-full bg-rose-500 px-5 py-2 font-semibold text-white transition hover:bg-rose-600"
+            href="/#pricing"
+            className="text-slate-400 transition hover:text-white"
           >
-            Get Reviewed →
+            Pricing
+          </Link>
+          <Link
+            href="/#topics"
+            className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
+              path?.startsWith("/topics")
+                ? "bg-slate-800 text-white"
+                : "bg-teal-500 text-slate-950 hover:bg-teal-400"
+            }`}
+          >
+            Browse Packs
           </Link>
         </div>
       </div>

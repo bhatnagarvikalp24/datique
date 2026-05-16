@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import Razorpay from "razorpay";
 import { prisma } from "@/lib/prisma";
+import { getTopic } from "@/lib/topics";
 
 export const runtime = "nodejs";
 
@@ -11,40 +12,50 @@ const getRazorpay = () => new Razorpay({
 
 export async function POST(request: NextRequest) {
   try {
-    const { submissionId } = await request.json();
+    const { purchaseId } = await request.json();
 
-    if (!submissionId) {
-      return Response.json(
-        { error: "Submission ID is required" },
-        { status: 400 }
-      );
+    if (!purchaseId) {
+      return Response.json({ error: "Purchase ID is required" }, { status: 400 });
     }
 
-    const submission = await prisma.submission.findUnique({
-      where: { id: submissionId },
+    const purchase = await prisma.purchase.findUnique({
+      where: { id: purchaseId },
     });
 
-    if (!submission) {
-      return Response.json({ error: "Submission not found" }, { status: 404 });
+    if (!purchase) {
+      return Response.json({ error: "Purchase not found" }, { status: 404 });
     }
 
+    const topic = getTopic(purchase.topic_id);
+    if (!topic) {
+      return Response.json({ error: "Topic not found" }, { status: 404 });
+    }
+
+    const amountInCents = topic.price * 100;
+
     const order = await getRazorpay().orders.create({
-      amount: 19900, // ₹199 in paise
-      currency: "INR",
-      receipt: `receipt_${submissionId.slice(0, 20)}`,
+      amount: amountInCents,
+      currency: "USD",
+      receipt: `pack_${purchaseId.slice(0, 20)}`,
       notes: {
-        submissionId,
-        email: submission.email,
+        purchaseId,
+        topicId: topic.id,
+        topicTitle: topic.title,
+        email: purchase.email,
       },
     });
 
-    // Save order ID to submission
-    await prisma.submission.update({
-      where: { id: submissionId },
+    await prisma.purchase.update({
+      where: { id: purchaseId },
       data: { razorpay_order_id: order.id },
     });
 
-    return Response.json({ orderId: order.id, amount: order.amount });
+    return Response.json({
+      orderId: order.id,
+      amount: order.amount,
+      currency: order.currency,
+      topicTitle: topic.title,
+    });
   } catch (err) {
     console.error("Create order error:", err);
     return Response.json({ error: "Failed to create order" }, { status: 500 });

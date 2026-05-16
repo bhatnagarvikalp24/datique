@@ -1,169 +1,171 @@
 import Link from "next/link";
+import Navbar from "@/app/components/Navbar";
+import { TOPICS } from "@/lib/topics";
+
+const TOPIC_ACCENTS: Record<string, { border: string; badge: string; glow: string }> = {
+  sql:               { border: "border-blue-500/40",   badge: "bg-blue-500/20 text-blue-300",   glow: "hover:border-blue-400/70" },
+  python:            { border: "border-amber-500/40",  badge: "bg-amber-500/20 text-amber-300", glow: "hover:border-amber-400/70" },
+  "data-engineering":{ border: "border-purple-500/40", badge: "bg-purple-500/20 text-purple-300",glow: "hover:border-purple-400/70" },
+  "cloud-computing": { border: "border-cyan-500/40",   badge: "bg-cyan-500/20 text-cyan-300",   glow: "hover:border-cyan-400/70" },
+  "case-studies":    { border: "border-rose-500/40",   badge: "bg-rose-500/20 text-rose-300",   glow: "hover:border-rose-400/70" },
+};
+
+const TOPIC_ICONS: Record<string, string> = {
+  sql: "⬡",
+  python: "◎",
+  "data-engineering": "⟳",
+  "cloud-computing": "◈",
+  "case-studies": "◆",
+};
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white text-gray-900">
+    <main className="min-h-screen bg-slate-950 text-white">
+      <Navbar />
 
-      {/* ── Navbar ───────────────────────────────────────────────── */}
-      <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white/90 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/" className="text-xl font-bold text-rose-500 tracking-tight">
-            datique
-          </Link>
-          <div className="flex items-center gap-6 text-sm">
-            <Link href="/about" className="text-gray-500 hover:text-gray-900 transition">
-              Our Story
-            </Link>
-            <Link
-              href="/submit"
-              className="rounded-full bg-rose-500 px-5 py-2 font-semibold text-white transition hover:bg-rose-600"
-            >
-              Get Reviewed →
-            </Link>
+      {/* Hero */}
+      <section className="relative overflow-hidden px-6 py-24">
+        {/* background gradient */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(20,184,166,0.12),transparent_60%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(99,102,241,0.08),transparent_60%)]" />
+
+        <div className="relative mx-auto max-w-4xl text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-teal-500/30 bg-teal-500/10 px-4 py-1.5 text-sm font-medium text-teal-300">
+            <span className="h-1.5 w-1.5 rounded-full bg-teal-400" />
+            20 assignments · instant PDF · $15
           </div>
-        </div>
-      </nav>
 
-      {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-rose-50 via-pink-50 to-white px-6 py-24 text-center">
-        {/* Decorative blobs */}
-        <div className="pointer-events-none absolute -top-20 -right-20 h-72 w-72 rounded-full bg-rose-100 opacity-40 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-10 -left-10 h-56 w-56 rounded-full bg-pink-100 opacity-50 blur-3xl" />
-
-        <div className="relative mx-auto max-w-3xl">
-          <span className="mb-5 inline-block rounded-full bg-rose-100 px-4 py-1.5 text-sm font-medium text-rose-600">
-            Reviewed by the data. Improved by you.
-          </span>
-          <h1 className="mb-5 text-5xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-6xl">
-            We turn profiles{" "}
-            <span className="relative inline-block">
-              <span className="relative z-10 text-rose-500">into matches.</span>
-              <span className="absolute bottom-1 left-0 z-0 h-3 w-full rounded bg-rose-100 opacity-60" />
+          <h1 className="mt-8 text-5xl font-extrabold leading-tight tracking-tight sm:text-7xl">
+            Practice with{" "}
+            <span className="bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">
+              real assignments.
+            </span>
+            <br />
+            Learn from{" "}
+            <span className="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">
+              explained solutions.
             </span>
           </h1>
-          <p className="mb-10 text-lg text-gray-500 sm:text-xl">
-            Built on the patterns from thousands of real dating profiles —
-            Datique gives you the brutally honest, specific review your
-            friends won&apos;t. Photos, prompts, vibe. Everything that makes
-            her swipe right or keep scrolling.
+
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-400">
+            Topic-wise assignment packs for SQL, Python, Data Engineering, Cloud, and Case Studies.
+            Solve interactively, test your code, view solutions — all after a one-time payment.
           </p>
-          <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+
+          <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link
-              href="/submit"
-              className="inline-block rounded-full bg-rose-500 px-9 py-4 text-lg font-bold text-white shadow-lg transition hover:bg-rose-600 hover:shadow-xl active:scale-95"
+              href="#topics"
+              className="rounded-xl bg-teal-500 px-8 py-3.5 text-sm font-bold text-slate-950 transition hover:bg-teal-400"
             >
-              Analyse My Profile – ₹199
+              Browse Topics
             </Link>
             <Link
-              href="/about"
-              className="inline-block rounded-full border border-gray-200 px-7 py-4 text-sm font-medium text-gray-600 transition hover:border-rose-300 hover:text-rose-500"
+              href="#pricing"
+              className="rounded-xl border border-slate-700 px-8 py-3.5 text-sm font-semibold text-slate-300 transition hover:border-slate-500 hover:text-white"
             >
-              Why Datique?
+              See Pricing
             </Link>
           </div>
-          <p className="mt-5 text-xs text-gray-400">
-            One-time ₹199 · PDF delivered instantly · No subscriptions
-          </p>
-        </div>
-      </section>
 
-      {/* ── The Uncomfortable Truth (stat hook) ─────────────────── */}
-      <section className="bg-gray-900 px-6 py-16 text-center text-white">
-        <div className="mx-auto max-w-3xl">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-rose-400">
-            The uncomfortable truth
-          </p>
-          <h2 className="mb-6 text-3xl font-bold sm:text-4xl">
-            The average guy gets{" "}
-            <span className="text-rose-400">1 match per 100 swipes.</span>
-          </h2>
-          <p className="mb-10 text-gray-400">
-            The top 10% of male profiles get{" "}
-            <span className="font-semibold text-white">58% of all matches</span>{" "}
-            on Hinge. The difference between them and everyone else isn&apos;t looks —
-            it&apos;s profile execution. Datique helps you cross that line.
-          </p>
-          <div className="grid gap-6 sm:grid-cols-3">
+          {/* Feature pills */}
+          <div className="mt-12 flex flex-wrap justify-center gap-3">
             {[
-              { stat: "~1%", label: "Average male match rate on Hinge" },
-              { stat: "10×", label: "More matches the top profiles get vs. average" },
-              { stat: "3 sec", label: "Time a woman spends before swiping left" },
-            ].map(({ stat, label }) => (
-              <div key={label} className="rounded-2xl bg-gray-800 p-6">
-                <div className="mb-1 text-4xl font-extrabold text-rose-400">{stat}</div>
-                <div className="text-sm text-gray-400">{label}</div>
-              </div>
+              "Downloadable PDFs",
+              "Assignments + Solutions",
+              "Step-by-step explanations",
+              "One-time payment",
+              "Lifetime access",
+            ].map((pill) => (
+              <span
+                key={pill}
+                className="rounded-full border border-slate-700 bg-slate-900 px-3.5 py-1.5 text-xs text-slate-400"
+              >
+                {pill}
+              </span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── How It Works ─────────────────────────────────────────── */}
-      <section className="px-6 py-20">
-        <div className="mx-auto max-w-4xl">
-          <p className="mb-3 text-center text-sm font-semibold uppercase tracking-widest text-rose-400">
-            Simple process
-          </p>
-          <h2 className="mb-12 text-center text-3xl font-bold text-gray-900">
-            From submission to report in minutes
-          </h2>
+      {/* Topics */}
+      <section id="topics" className="px-6 pb-20">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-10 text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-teal-400">
+              Assignment Packs
+            </p>
+            <h2 className="mt-3 text-4xl font-bold">Choose your topic</h2>
+            <p className="mt-3 text-slate-400">
+              Each pack comes as downloadable PDFs — assignments and fully explained solutions.
+            </p>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {TOPICS.map((topic) => {
+              const accent = TOPIC_ACCENTS[topic.id] ?? TOPIC_ACCENTS["sql"];
+              const icon = TOPIC_ICONS[topic.id] ?? "●";
+              return (
+                <Link
+                  key={topic.id}
+                  href={`/topics/${topic.id}`}
+                  className={`group relative flex flex-col rounded-2xl border bg-slate-900 p-6 transition ${accent.border} ${accent.glow}`}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <span className={`rounded-xl px-2.5 py-1 text-lg font-bold ${accent.badge}`}>
+                      {icon}
+                    </span>
+                    <span className="rounded-full bg-slate-800 px-2.5 py-0.5 text-xs font-semibold text-slate-400">
+                      {topic.assignmentCount} assignments
+                    </span>
+                  </div>
+
+                  <h3 className="mt-4 text-lg font-bold text-white">{topic.shortTitle}</h3>
+                  <p className="mt-1.5 flex-1 text-sm leading-6 text-slate-400">{topic.tagline}</p>
+
+                  <div className="mt-5 flex items-center justify-between border-t border-slate-800 pt-4">
+                    <div>
+                      <p className="text-xs text-slate-500">One-time</p>
+                      <p className="text-xl font-bold text-white">${topic.price}</p>
+                    </div>
+                    <span className="text-sm font-semibold text-slate-500 transition group-hover:text-white">
+                      View pack →
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* What you get strip */}
+      <section className="border-y border-slate-800 bg-slate-900 px-6 py-14">
+        <div className="mx-auto max-w-5xl">
           <div className="grid gap-8 sm:grid-cols-3">
             {[
               {
-                step: "01",
-                icon: "📸",
-                title: "Upload Your Profile",
-                desc: "Submit screenshots of your full profile — photos, prompts, bio. We analyse everything.",
+                icon: "✎",
+                title: "Real Assignments",
+                body: "Topic-wise questions used in real jobs and interviews — not generic exercises.",
               },
               {
-                step: "02",
-                icon: "🔬",
-                title: "Deep Analysis Begins",
-                desc: "Every photo, prompt, and bio is scored against patterns from thousands of real profiles. We know what works — and we know exactly where yours is losing her attention.",
+                icon: "◉",
+                title: "Explained Solutions",
+                body: "Every answer comes with a full walkthrough so you actually understand it.",
               },
               {
-                step: "03",
-                icon: "📄",
-                title: "Get Your PDF Report",
-                desc: "A 3-page structured report with scores, rewrites, and your 3 highest-impact fixes. Ready instantly.",
+                icon: "↓",
+                title: "Instant PDF Download",
+                body: "Pay once, download immediately. Lifetime access, no subscriptions.",
               },
-            ].map(({ step, icon, title, desc }) => (
-              <div key={step} className="relative rounded-2xl bg-gray-50 p-7">
-                <div className="mb-4 text-4xl">{icon}</div>
-                <div className="absolute right-5 top-5 text-5xl font-extrabold text-gray-100">
-                  {step}
-                </div>
-                <h3 className="mb-2 text-lg font-bold text-gray-900">{title}</h3>
-                <p className="text-sm leading-relaxed text-gray-500">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── What's in the Report ─────────────────────────────────── */}
-      <section className="bg-rose-50 px-6 py-20">
-        <div className="mx-auto max-w-3xl">
-          <p className="mb-3 text-center text-sm font-semibold uppercase tracking-widest text-rose-400">
-            Your deliverable
-          </p>
-          <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">
-            A 3-page PDF that does the thinking for you
-          </h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {[
-              { icon: "📊", title: "Overall Score + 5 Dimensions", desc: "Photo quality, variety, bio authenticity, humor, intent clarity — all scored." },
-              { icon: "📸", title: "Photo-by-Photo Breakdown", desc: "Each photo scored /10, verdict (Keep / Improve / Replace), and one specific fix." },
-              { icon: "✍️", title: "Prompt Rewrites", desc: "Your actual prompts rewritten in your voice. Copy-paste ready." },
-              { icon: "🎯", title: "3 Highest-Impact Fixes", desc: "Ranked by effort vs. impact so you know exactly where to start." },
-              { icon: "💬", title: "Full Bio Rewrite", desc: "A complete rewrite based on signals from your profile." },
-              { icon: "🧠", title: "Vibe & Positioning Analysis", desc: "Are you attracting the people you actually want? We check." },
-            ].map(({ icon, title, desc }) => (
-              <div key={title} className="flex gap-4 rounded-xl bg-white p-5 shadow-sm">
-                <span className="text-2xl">{icon}</span>
+            ].map((item) => (
+              <div key={item.title} className="flex gap-4">
+                <span className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-teal-500/10 text-lg font-bold text-teal-400">
+                  {item.icon}
+                </span>
                 <div>
-                  <div className="mb-1 font-semibold text-gray-900">{title}</div>
-                  <div className="text-sm text-gray-500">{desc}</div>
+                  <p className="font-semibold text-white">{item.title}</p>
+                  <p className="mt-1 text-sm leading-6 text-slate-400">{item.body}</p>
                 </div>
               </div>
             ))}
@@ -171,39 +173,62 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── CTA ──────────────────────────────────────────────────── */}
-      <section className="bg-rose-500 px-6 py-20 text-center text-white">
-        <div className="mx-auto max-w-2xl">
-          <h2 className="mb-4 text-4xl font-extrabold">
-            Stop guessing. Start matching.
-          </h2>
-          <p className="mb-8 text-lg text-rose-100">
-            For ₹199 — less than a single date — get the honest, specific
-            review that tells you exactly what to fix and in what order.
+      {/* Pricing */}
+      <section id="pricing" className="px-6 py-20">
+        <div className="mx-auto max-w-md text-center">
+          <p className="text-xs font-semibold uppercase tracking-widest text-teal-400">Pricing</p>
+          <h2 className="mt-3 text-4xl font-bold">Simple & flat</h2>
+          <p className="mt-3 text-slate-400">Every topic is $15. One-time. Lifetime access.</p>
+
+          <div className="mt-10 rounded-2xl border border-teal-500/40 bg-slate-900 p-8">
+            <p className="text-6xl font-extrabold text-white">$15</p>
+            <p className="mt-2 text-slate-400">per topic · one-time payment</p>
+            <ul className="mt-8 space-y-3 text-left">
+              {[
+                "20 AI-generated assignments — instant PDF",
+                "20 fully explained solutions — instant PDF",
+                "Lifetime access",
+                "All 5 topics available",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-sm text-slate-300">
+                  <span className="mt-0.5 text-teal-400">✓</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="#topics"
+              className="mt-8 block rounded-xl bg-teal-500 py-3 text-center text-sm font-bold text-slate-950 transition hover:bg-teal-400"
+            >
+              Browse Topics
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="border-t border-slate-800 px-6 py-16 text-center">
+        <div className="mx-auto max-w-xl">
+          <h2 className="text-3xl font-bold">Start practising today.</h2>
+          <p className="mt-4 text-slate-400">
+            Pick any topic. Pay once. Solve assignments and learn from solutions.
           </p>
           <Link
-            href="/submit"
-            className="inline-block rounded-full bg-white px-10 py-4 text-lg font-bold text-rose-500 shadow-lg transition hover:bg-rose-50 active:scale-95"
+            href="#topics"
+            className="mt-8 inline-flex rounded-xl bg-teal-500 px-8 py-3.5 text-sm font-bold text-slate-950 transition hover:bg-teal-400"
           >
-            Analyse My Profile – ₹199
+            Browse Topics
           </Link>
-          <p className="mt-4 text-sm text-rose-200">
-            Report generated instantly · No recurring charges
-          </p>
         </div>
       </section>
 
-      {/* ── Footer ───────────────────────────────────────────────── */}
-      <footer className="border-t border-gray-100 px-6 py-8">
-        <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 text-sm text-gray-400 sm:flex-row">
-          <span className="font-bold text-rose-500">datique</span>
-          <span>We turn profiles into matches.</span>
-          <div className="flex gap-5">
-            <Link href="/about" className="hover:text-gray-700 transition">Our Story</Link>
-            <Link href="/submit" className="hover:text-gray-700 transition">Get Reviewed</Link>
-            <a href="mailto:connect@datique.co.in" className="hover:text-gray-700 transition">Contact</a>
-          </div>
-          <span>© {new Date().getFullYear()} Datique</span>
+      <footer className="border-t border-slate-800 px-6 py-8">
+        <div className="mx-auto flex max-w-5xl flex-col gap-3 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+          <span className="font-bold text-white">DataPath Academy</span>
+          <span>Real assignments. Explained solutions. One-time access.</span>
+          <a href="mailto:connect@datapath.academy" className="hover:text-white">
+            Contact
+          </a>
         </div>
       </footer>
     </main>
