@@ -8,19 +8,19 @@ export async function GET(request: NextRequest) {
   if (!token || token !== process.env.ADMIN_PASSWORD) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const submissions = await prisma.submission.findMany({
+
+  const purchases = await prisma.purchase.findMany({
     orderBy: { created_at: "desc" },
     select: {
       id: true,
       name: true,
       email: true,
-      age: true,
-      app_used: true,
-      vibe: true,
+      topic_id: true,
+      tier: true,
       payment_status: true,
       created_at: true,
     },
   });
 
-  return Response.json({ submissions });
+  return Response.json({ purchases });
 }
