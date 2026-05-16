@@ -163,7 +163,7 @@ function PaymentContent() {
 
           <div className="overflow-hidden rounded-2xl border border-slate-700">
             {/* Header */}
-            <div className="bg-slate-900 px-8 py-6">
+            <div className="bg-slate-900 px-5 py-6 sm:px-8">
               <p className="text-xs font-semibold uppercase tracking-widest text-teal-400">
                 Assignment Pack · One-time payment
               </p>
@@ -174,7 +174,7 @@ function PaymentContent() {
               <p className="mt-1 text-sm text-slate-400">{topic.title}</p>
             </div>
 
-            <div className="bg-slate-950 p-8">
+            <div className="bg-slate-950 p-5 sm:p-8">
               {/* Includes */}
               <div className="mb-6">
                 <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-slate-500">
